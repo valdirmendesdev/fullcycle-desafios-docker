@@ -19,19 +19,19 @@ function executeQuery(query, callback) {
 
 app.get('/', (req, res) => {
     const insertPersonSql = `INSERT INTO people(name) values('valdir')`
-    executeQuery(insertPersonSql)
+    executeQuery(insertPersonSql, function (_, results, _) {
+        const selectPeople = 'SELECT name from people';
+        executeQuery(selectPeople, function (_, results, _) {
 
-    const selectPeople = 'SELECT name from people';
-    executeQuery(selectPeople, function (_, results, _) {
-
-        res.write('<h1>Full Cycle</h1>')
-        res.write('Nomes cadastrados:')
-        res.write('<ul>')
-        for (const iterator of results) {
-            res.write('<li>' + iterator['name'] + '</li>')
-        }
-        res.write('</ul>')
-        res.end()
+            res.write('<h1>Full Cycle</h1>')
+            res.write('Nomes cadastrados:')
+            res.write('<ul>')
+            for (const iterator of results) {
+                res.write('<li>' + iterator['name'] + '</li>')
+            }
+            res.write('</ul>')
+            res.end()
+        })
     })
 })
 
