@@ -1,0 +1,15 @@
+FROM golang:alpine AS golangapp
+
+WORKDIR /app
+
+COPY main.go main.go
+
+RUN go build -o codeeducation *.go
+
+FROM scratch
+
+WORKDIR /app
+
+COPY --from=golangapp /app/codeeducation .
+
+ENTRYPOINT [ "./codeeducation" ]
